@@ -3,7 +3,6 @@
     public class Logger
     {
         private static Logger instance = new Logger();
-        private static List<string> log = new List<string>();
 
         static Logger()
         {
@@ -30,11 +29,6 @@
         {
             Console.WriteLine(log.ToString());
             AddToLog(log.ToString());
-        }
-
-        public static List<string> GetLog()
-        {
-            return log;
         }
 
         private static void AddToLog(string str)
