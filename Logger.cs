@@ -3,6 +3,7 @@
     public class Logger
     {
         private static Logger instance = new Logger();
+        private static string _projectPath = "C:\\dotnet\\Modul2HW5\\";
 
         static Logger()
         {
@@ -31,9 +32,14 @@
             AddToLog(log.ToString());
         }
 
+        public void ChangeProjectPath(string str)
+        {
+            _projectPath = str;
+        }
+
         private static void AddToLog(string str)
         {
-            FileService.CreateFile(str);
+            FileService.CreateFile(str, _projectPath);
         }
     }
 }

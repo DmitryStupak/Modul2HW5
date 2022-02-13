@@ -4,20 +4,27 @@ namespace Module2HW5
 {
     public static class FileService
     {
-        public static void CreateFile(string str)
+        public static void CreateFile(string str, string projectPath)
         {
-            string configFile = File.ReadAllText("C:\\dotnet\\Modul2HW5\\configs.json");
-            Config? config = JsonSerializer.Deserialize<Config>(configFile);
-            string dir = $"C:\\dotnet\\Modul2HW5\\{config?.Logger?.DirectoryPath}";
-            Directory.CreateDirectory(dir);
-            string path = $"{dir}\\{DateTime.Now.ToString("HH.mm.ss dd.MM.yyyy")}{config?.Logger?.FileExtension}";
-            using (FileStream fs = new FileStream(path, FileMode.Append))
+            try
             {
-                byte[] array = System.Text.Encoding.Default.GetBytes($"{str} \n");
-                fs.WriteAsync(array, 0, array.Length);
-            }
+                string configFile = File.ReadAllText($"{projectPath}configs.json");
+                Config? config = JsonSerializer.Deserialize<Config>(configFile);
+                string dir = $"{projectPath}{config?.Logger?.DirectoryPath}";
+                Directory.CreateDirectory(dir);
+                string path = $"{dir}\\{DateTime.Now.ToString("HH.mm.ss dd.MM.yyyy")}{config?.Logger?.FileExtension}";
+                using (FileStream fs = new FileStream(path, FileMode.Append))
+                {
+                    byte[] array = System.Text.Encoding.Default.GetBytes($"{str} \n");
+                    fs.WriteAsync(array, 0, array.Length);
+                }
 
-            CheckNumberOfFiles(dir);
+                CheckNumberOfFiles(dir);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public static void CheckNumberOfFiles(string path)
